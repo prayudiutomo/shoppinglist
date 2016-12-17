@@ -3,9 +3,9 @@ class ShoppingList extends React.Component {
     super(props);
     this.state = {
       data: [
-				{"id":"00001","product":"iPhone 7","complete":"false"},
-				{"id":"00002","product":"Macbook Pro","complete":"false"},
-        {"id":"00003","product":"iPad","complete":"false"}
+				{"id":"01","product":"iPhone 7"},
+				{"id":"02","product":"Macbook Pro"},
+        {"id":"03","product":"iPad"}
 			]
     };
   }
@@ -20,23 +20,11 @@ class ShoppingList extends React.Component {
 		this.setState({data});
 		return;
 	}
-	handleSubmit(task) {
+	handleSubmit(product) {
 		var data = this.state.data;
 		var id = this.generateId().toString();
-		var complete = 'false';
-		data = data.concat([{id, task, complete}]);
+		data = data.concat([{id, product}]);
 		this.setState({data});
-	}
-	handleToggleComplete(nodeId) {
-		var data = this.state.data;
-		for (var i in data) {
-			if (data[i].id == nodeId) {
-				data[i].complete = data[i].complete === 'true' ? 'false' : 'true';
-				break;
-			}
-		}
-		this.setState({data});
-		return;
 	}
 	render() {
 		return (
@@ -108,10 +96,6 @@ class ProductAction extends React.Component {
 class ProductForm extends React.Component {
 	doSubmit(e) {
 		e.preventDefault();
-		var product = React.findDOMNode(this.refs.product).value.trim();
-		if (!product) {
-			return;
-		}
 		this.props.onTaskSubmit(product);
 		React.findDOMNode(this.refs.product).value = '';
 		return;
