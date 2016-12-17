@@ -9,9 +9,11 @@ class ShoppingList extends React.Component {
 			]
     };
   }
+
 	generateId() {
 		return Math.floor(Math.random()*90000) + 10000;
 	}
+
 	handleNodeRemoval(nodeId) {
 		var data = this.state.data;
 		data = data.filter(function (el) {
@@ -20,17 +22,19 @@ class ShoppingList extends React.Component {
 		this.setState({data});
 		return;
 	}
+
 	handleSubmit(product) {
 		var data = this.state.data;
 		var id = this.generateId().toString();
 		data = data.concat([{id, product}]);
 		this.setState({data});
 	}
+
 	render() {
 		return (
 			<div className="container">
         <div className="col-sm-6">
-  				<ProductList data={this.state.data} removeItem={this.handleNodeRemoval} updateItem={this.handleToggleComplete} />
+  				<ProductList data={this.state.data} removeItem={this.handleNodeRemoval.bind(this)} updateItem={this.handleToggleComplete} />
         </div>
 			</div>
 		);
@@ -38,6 +42,11 @@ class ShoppingList extends React.Component {
 }
 
 class ProductList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.removeItem = this.removeItem.bind(this);
+  }
+
 	removeItem(nodeId) {
 		this.props.removeItem(nodeId);
 		return;
@@ -70,6 +79,11 @@ class ProductList extends React.Component {
 }
 
 class ProductAction extends React.Component {
+  constructor(props) {
+    super(props);
+    this.removeItem = this.removeItem.bind(this);
+  }
+
 	removeItem(e) {
 		e.preventDefault();
 		this.props.removeItem(this.props.nodeId);
