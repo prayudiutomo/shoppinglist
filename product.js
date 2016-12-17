@@ -1,38 +1,3 @@
-class ShoppingListf extends React.Component {
- render(){
-   return (
-    <div className="container">
-       <div className="col-sm-6">
-           <ul>
-             <li className="row captions">
-               <ProductForm onTaskSubmit={this.handleSubmit} />
-             </li>
-             <li className="row">
-               <span className="itemName">iPhone 7</span>
-               <span className="action">Edit</span>
-               <span className="action">Delete</span>
-             </li>
-             <li className="row">
-               <span className="itemName">Macbook Pro</span>
-               <span className="action">Edit</span>
-               <span className="action">Delete</span>
-             </li>
-             <li className="row">
-               <span className="itemName">iPad</span>
-               <span className="action">Edit</span>
-               <span className="action">Delete</span>
-             </li>
-             <li className="row totals">
-               <span className="action total">TOTAL</span>
-               <span className="order highlight"> <a className="text-center">HIGHLIGHT</a></span>
-             </li>
-           </ul>
-         </div>
-      </div>
-   );
- }
-}
-
 class ShoppingList extends React.Component {
   constructor(props) {
     super(props);
