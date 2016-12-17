@@ -1,0 +1,86 @@
+body{
+	font-size : 14px;
+	background-color: #f2f6f9;
+}
+
+ul{
+	list-style-type: none;
+}
+
+a:hover {
+	text-decoration:none;
+}
+
+.row{
+	padding-bottom :0;
+	padding-left: 15px;
+	background-color: #ffffff;
+	margin-bottom: 11px;
+}
+
+.row span{
+	padding: 10px 0 6px 0;
+}
+
+.captions{
+	color: #7e93a7;
+	font-size:12px;
+	text-transform: uppercase;
+	padding: 0;
+	box-shadow: 0 0 0;
+	background-color: #f2f6f9;
+	margin-top: 20px;
+}
+
+.captions span{
+	padding: 0 21px 0 0;
+}
+
+.itemName{
+	color: #727578;
+	font-size :16px;
+	font-weight: bold;
+	float: left;
+	padding-left:25px;
+}
+
+.action{
+	color: #f06953;
+	font-weight: bold;
+	float: right;
+	margin-right: 10px;
+}
+
+.totals{
+	background-color: #f2f6f9;
+}
+
+.totals span{
+	padding: 40px 15px 40px 0;
+}
+
+.totals .action{
+	float: left;
+}
+
+.totals .itemName{
+	margin-top: 1px;
+}
+
+.totals .order{
+	float: right;
+	padding: 0;
+	margin-top: 40px;
+	padding-left: 5px;
+	cursor: pointer;
+}
+
+.order a{
+	color: #f06953;
+	font-weight: bold;
+}
+
+.form-control {
+	width: 60%;
+	display: inline-block;
+}
