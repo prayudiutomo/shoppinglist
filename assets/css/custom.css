@@ -21,6 +21,10 @@ a:hover {
 	text-decoration:none;
 }
 
+.bold {
+	font-weight: bold;
+}
+
 .container {
     margin-right: auto;
     margin-left: auto;

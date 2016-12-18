@@ -44,10 +44,10 @@ class ShoppingList extends React.Component {
       return el.id === nodeId;
     });
 
-    if (result[0].highlight == false) {
-      result[0].highlight = true;
+    if (data[0].highlight == false) {
+      data[0].highlight = true;
     } else {
-      result[0].highlight = false;
+      data[0].highlight = false;
     }
 
     this.setState({data});
@@ -58,12 +58,13 @@ class ShoppingList extends React.Component {
 			<div className="container">
         <div className="col-sm-6">
   				<ProductList
-          data={this.state.data}
-          highlight={this.state.highlight}
-          removeItem={this.handleItemRemoval.bind(this)}
-          updateItem={this.handleItemUpdated.bind(this)}
-          updateHightlight={this.handleHightlight.bind(this)}
-          addItem={this.handleItemAdd.bind(this)}
+            data={this.state.data}
+            highlight={this.state.highlight}
+            removeItem={this.handleItemRemoval.bind(this)}
+            updateItem={this.handleItemUpdated.bind(this)}
+            updateHighlight={this.handleHighlight.bind(this)}
+            addItem={this.handleItemAdd.bind(this)}
+          />
         </div>
 			</div>
 		);
@@ -85,7 +86,7 @@ class ProductList extends React.Component {
         highlight={listItem.highlight}
         removeItem={this.props.removeItem.bind(this)}
 				updateItem={this.props.updateItem.bind(this)}
-        updateHightlight={this.props.updateHightlight.bind(this)}/>
+        updateHighlight={this.props.updateHighlight.bind(this)}/>
 			);
 		},this);
 
@@ -132,11 +133,17 @@ class ProductAction extends React.Component {
 	}
 
 	render() {
+    if (this.props.highlight) {
+      var className = 'row bold';
+    } else {
+      var className = 'row';
+    }
+
     return (
 			<li className={className}
-      onClick={this.updateHighlight.bind(this)}>
       onDoubleClick={this.updateItem.bind(this)}>
-			  <span className="itemName">{this.props.product}</span>
+			  <span className="itemName"
+        onClick={this.updateHighlight.bind(this)}>{this.props.product}</span>
 			  <span className="action" onClick={this.updateItem.bind(this)}>Edit</span>
 			  <span className="action" onClick={this.removeItem.bind(this)}>Delete</span>
 			</li>
@@ -166,7 +173,7 @@ class ProductForm extends React.Component {
 	}
 }
 
-let root =  document.getElementById('root');
+var root =  document.getElementById('root');
 
 ReactDOM.render(
  <ShoppingList />, root
