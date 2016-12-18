@@ -3,8 +3,9 @@
 }
 
 body{
-	font-size : 14px;
+	font-size : 16px;
 	background-color: #f2f6f9;
+	font-family: Helvetica, Arial, sans-serif;
 }
 
 ul{
@@ -114,4 +115,11 @@ a:hover {
 .form-control {
 	width: 60%;
 	display: inline-block;
+	font-size: 14px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.btn {
+		font-size: 16px;
 }
