@@ -70,7 +70,7 @@ class ProductList extends React.Component {
         </li>
 				{listNodes}
         <li className="row totals">
-          <span className="action total">TOTAL: {this.props.data.count}</span>
+          <span className="action total">TOTAL: {this.props.data.length}</span>
           <span className="order highlight">HIGHLIGHT</span>
         </li>
 			</ul>
