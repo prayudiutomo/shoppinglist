@@ -14,7 +14,7 @@ class ShoppingList extends React.Component {
 		return Math.floor(Math.random()*90000) + 10000;
 	}
 
-	handleNodeRemoval(nodeId) {
+	handleItemRemoval(nodeId) {
 		var data = this.state.data;
 		data = data.filter(function (el) {
 			return el.id !== nodeId;
@@ -34,7 +34,7 @@ class ShoppingList extends React.Component {
 		return (
 			<div className="container">
         <div className="col-sm-6">
-  				<ProductList data={this.state.data} removeItem={this.handleNodeRemoval.bind(this)} updateItem={this.handleToggleComplete} />
+  				<ProductList data={this.state.data} removeItem={this.handleItemRemoval.bind(this)} updateItem={this.handleItemUpdated} />
         </div>
 			</div>
 		);
@@ -70,7 +70,7 @@ class ProductList extends React.Component {
         </li>
 				{listNodes}
         <li className="row totals">
-          <span className="action total">TOTAL</span>
+          <span className="action total">TOTAL: {this.props.data.count}</span>
           <span className="order highlight">HIGHLIGHT</span>
         </li>
 			</ul>
