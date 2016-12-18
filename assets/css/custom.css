@@ -127,3 +127,13 @@ a:hover {
 .btn {
 		font-size: 16px;
 }
+
+label {
+		padding: 8px 10px 5px 10px;
+		border: 1px solid #fff;
+}
+
+label[contenteditable='true'] {
+    border: 1px solid #aaa;
+		background-color: #efefef;
+}

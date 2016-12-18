@@ -164,8 +164,8 @@ class ProductAction extends React.Component {
 
 	updateItem(e) {
 		if(e.which === 13 || e.which === 27) {
-            this.props.updateItem(this.props.nodeId, this.refs.todo.textContent);
-        }
+        this.props.updateItem(this.props.nodeId, this.refs.edit.textContent);
+    }
 	}
 
 	removeItem(e) {
@@ -186,10 +186,10 @@ class ProductAction extends React.Component {
 
 	render() {
 
-		if(this.props.highlight) {
-			var className = 'row highlight';
+		if (this.props.highlight) {
+			var className = 'row edit highlight';
 		} else {
-			var className = 'row';
+			var className = 'row edit';
 		}
 
 		return (
@@ -202,7 +202,7 @@ class ProductAction extends React.Component {
 							checked={this.props.highlight}
 						/>
 						<label
-							ref="todo"
+							ref="edit"
 							contentEditable={this.props.editable}
 							onKeyUp={this.updateItem.bind(this)}>
 							{this.props.product}
@@ -231,7 +231,7 @@ class ProductForm extends React.Component {
 		return (
 			<form onSubmit={this.doSubmit.bind(this)}>
 				<span><input type="text" id="product" ref="product" className="form-control" placeholder="Add product" /></span>
-				<span><input type="submit" value="Add" className="btn btn-primary" /></span>
+				<span><input type="submit" value="Add" className="btn" /></span>
 			</form>
 		);
 	}
