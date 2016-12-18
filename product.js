@@ -108,8 +108,23 @@ class ProductAction extends React.Component {
 }
 
 class ProductForm extends React.Component {
-	doSubmit(e) {
+  constructor(props) {
+    super(props);
+  }
+
+	doSubmitd(e) {
 		e.preventDefault();
+		this.props.onTaskSubmit(product);
+		React.findDOMNode(this.refs.product).value = '';
+		return;
+	}
+
+  doSubmit(e) {
+		e.preventDefault();
+		var product = React.findDOMNode(this.refs.product).value.trim();
+		if (!product) {
+			return;
+		}
 		this.props.onTaskSubmit(product);
 		React.findDOMNode(this.refs.product).value = '';
 		return;
