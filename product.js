@@ -30,11 +30,18 @@ class ShoppingList extends React.Component {
 		this.setState({data});
 	}
 
+  handleItemAdd(product) {
+		var newItem = this.state.data;
+		newItem.push({id: this.generateId().toString(), product: product});
+		this.setState({newItem})
+	}
+
 	render() {
 		return (
 			<div className="container">
         <div className="col-sm-6">
-  				<ProductList data={this.state.data} removeItem={this.handleItemRemoval.bind(this)} updateItem={this.handleItemUpdated} />
+  				<ProductList data={this.state.data} removeItem={this.handleItemRemoval.bind(this)} updateItem={this.handleItemUpdated}
+          addItem={this.handleItemAdd.bind(this)}/>
         </div>
 			</div>
 		);
@@ -45,6 +52,7 @@ class ProductList extends React.Component {
   constructor(props) {
     super(props);
     this.removeItem = this.removeItem.bind(this);
+    this.addItem = this.addItem.bind(this);
   }
 
 	removeItem(nodeId) {
@@ -57,6 +65,11 @@ class ProductList extends React.Component {
 		return;
 	}
 
+  addItem(product) {
+		this.props.addItem(product);
+		return;
+	}
+
 	render() {
 		var listNodes = this.props.data.map(function (listItem) {
 			return (
@@ -66,7 +79,7 @@ class ProductList extends React.Component {
 		return (
 			<ul className="list-group">
         <li className="row captions">
-          <ProductForm onTaskSubmit={this.handleSubmit} />
+          <ProductForm onTaskSubmit={this.addItem} />
         </li>
 				{listNodes}
         <li className="row totals">
@@ -115,12 +128,12 @@ class ProductForm extends React.Component {
 
   doSubmit(e) {
 		e.preventDefault();
-		var product = React.findDOMNode(this.refs.product).value.trim();
+		var product = ReactDOM.findDOMNode(this.refs.product).value.trim();
 		if (!product) {
 			return;
 		}
 		this.props.onTaskSubmit(product);
-		React.findDOMNode(this.refs.product).value = '';
+		ReactDOM.findDOMNode(this.refs.product).value = '';
 		return;
 	}
 
