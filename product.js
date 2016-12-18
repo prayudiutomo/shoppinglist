@@ -18,7 +18,7 @@ class ShoppingList extends React.Component {
 				{
 					"id":"03",
 					"product":"iPad",
-					"highlight":true,
+					"highlight":false,
 					"editable":false
 				}
 			]
@@ -70,9 +70,9 @@ class ShoppingList extends React.Component {
 			return v.id === nodeId;
 		});
 
-		if(result[0].highlight == false) {
+		if (result[0].highlight == false) {
 	   		result[0].highlight = true;
-		}else{
+		} else {
 	   		result[0].highlight = false;
 		}
 
@@ -86,9 +86,9 @@ class ShoppingList extends React.Component {
 			return v.id === nodeId;
 		});
 
-		if(result[0].editable == false) {
+		if (result[0].editable == false) {
 	   		result[0].editable = true;
-		}else{
+		} else {
 	   		result[0].editable = false;
 		}
 
@@ -163,8 +163,8 @@ class ProductAction extends React.Component {
 	}
 
 	updateItem(e) {
-		if(e.which === 13 || e.which === 27) {
-        this.props.updateItem(this.props.nodeId, this.refs.edit.textContent);
+		if (e.which === 13 || e.which === 27) {
+      this.props.updateItem(this.props.nodeId, this.refs.edit.textContent);
     }
 	}
 
@@ -208,7 +208,9 @@ class ProductAction extends React.Component {
 							{this.props.product}
 						</label>
 					</span>
-					<span className="action" onClick={this.handleEditable.bind(this)}>Edit</span>
+					<span className="action" onClick={this.handleEditable.bind(this)}>
+            {(this.props.editable) ? "Save" : "Edit"}
+          </span>
 					<span className="action" onClick={this.removeItem.bind(this)}>Delete</span>
 			</li>
 			);
