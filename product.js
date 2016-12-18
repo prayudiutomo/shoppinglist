@@ -3,11 +3,25 @@ class ShoppingList extends React.Component {
 		super(props);
 		this.state = {
 			data: [
-				{"id":"01","product":"iPhone 7","highlight":false},
-				{"id":"02","product":"Macbook Pro","highlight":false},
-				{"id":"03","product":"iPad","highlight":false}
-			],
-			highlight: 0
+				{
+					"id":"01",
+					"product":"iPhone 7",
+					"highlight":false,
+					"editable":false
+				},
+				{
+					"id":"02",
+					"product":"Macbook Pro",
+					"highlight":false,
+					"editable":false
+				},
+				{
+					"id":"03",
+					"product":"iPad",
+					"highlight":true,
+					"editable":false
+				}
+			]
 		};
 	}
 
@@ -15,8 +29,16 @@ class ShoppingList extends React.Component {
 		return Math.floor(Math.random()*90000) + 10000;
 	}
 
-	handleItemUpdated(nodeId) {
-		console.log('update');
+	handleItemUpdated(nodeId, product) {
+		var data = this.state.data;
+		var result = data.filter(function(v) {
+			return v.id === nodeId;
+		});
+
+		result[0].product = product;
+		result[0].editable = false;
+
+		this.setState({data})
 	}
 
 	handleItemRemoval(nodeId) {
@@ -24,7 +46,9 @@ class ShoppingList extends React.Component {
 		data = data.filter(function (el) {
 			return el.id !== nodeId;
 		});
+
 		this.setState({data});
+
 		return;
 	}
 
@@ -33,8 +57,10 @@ class ShoppingList extends React.Component {
 		newItem.push({
 			id: this.generateId().toString(),
 			product: product,
-			highlight: false
+			highlight: false,
+			editable: false
 		});
+
 		this.setState({newItem})
 	}
 
@@ -50,6 +76,21 @@ class ShoppingList extends React.Component {
 	   		result[0].highlight = false;
 		}
 
+		this.setState({data})
+	}
+
+
+	handleEditable(nodeId) {
+		var data = this.state.data;
+		var result = data.filter(function(v) {
+			return v.id === nodeId;
+		});
+
+		if(result[0].editable == false) {
+	   		result[0].editable = true;
+		}else{
+	   		result[0].editable = false;
+		}
 
 		this.setState({data})
 	}
@@ -60,7 +101,8 @@ class ShoppingList extends React.Component {
 				<div className="col-sm-6">
 					<ProductList
 						data={this.state.data}
-						highlight={this.state.highlight}
+						editable={this.state.editable}
+						handleEditable={this.handleEditable.bind(this)}
 						removeItem={this.handleItemRemoval.bind(this)}
 						updateItem={this.handleItemUpdated.bind(this)}
 						updateHightlight={this.handleHightlight.bind(this)}
@@ -85,6 +127,8 @@ class ProductList extends React.Component {
 				nodeId={listItem.id}
 				product={listItem.product}
 				highlight={listItem.highlight}
+				editable={listItem.editable}
+				handleEditable={this.props.handleEditable.bind(this)}
 				removeItem={this.props.removeItem.bind(this)}
 				updateItem={this.props.updateItem.bind(this)}
 				updateHightlight={this.props.updateHightlight.bind(this)}/>
@@ -118,39 +162,53 @@ class ProductAction extends React.Component {
 		super(props);
 	}
 
+	updateItem(e) {
+		if(e.which === 13 || e.which === 27) {
+            this.props.updateItem(this.props.nodeId, this.refs.todo.textContent);
+        }
+	}
+
 	removeItem(e) {
 		e.preventDefault();
 		this.props.removeItem(this.props.nodeId);
 		return;
 	}
 
-	updateItem(e) {
+	handleEditable(e) {
 		e.preventDefault();
-		this.props.updateItem(this.props.nodeId);
+		this.props.handleEditable(this.props.nodeId);
 		return;
 	}
 
 	updateHightlight(e) {
-		e.preventDefault();
 		this.props.updateHightlight(this.props.nodeId);
-		return;
 	}
 
 	render() {
 
 		if(this.props.highlight) {
 			var className = 'row highlight';
-		}else{
+		} else {
 			var className = 'row';
 		}
 
 		return (
 			<li
-				className={className}
-				onDoubleClick={this.props.updateItem.bind(this)}>
-					<span className="itemName"
-          onClick={this.updateHightlight.bind(this)}>{this.props.product}</span>
-					<span className="action" onClick={this.updateItem.bind(this)}>Edit</span>
+				className={className} >
+					<span className="itemName">
+						<input
+							type="checkbox"
+							onClick={this.updateHightlight.bind(this)}
+							checked={this.props.highlight}
+						/>
+						<label
+							ref="todo"
+							contentEditable={this.props.editable}
+							onKeyUp={this.updateItem.bind(this)}>
+							{this.props.product}
+						</label>
+					</span>
+					<span className="action" onClick={this.handleEditable.bind(this)}>Edit</span>
 					<span className="action" onClick={this.removeItem.bind(this)}>Delete</span>
 			</li>
 			);
@@ -172,10 +230,10 @@ class ProductForm extends React.Component {
 	render() {
 		return (
 			<form onSubmit={this.doSubmit.bind(this)}>
-			<span><input type="text" id="product" ref="product" className="form-control" placeholder="Add product" /></span>
-			<span><input type="submit" value="Add" className="btn btn-primary" /></span>
+				<span><input type="text" id="product" ref="product" className="form-control" placeholder="Add product" /></span>
+				<span><input type="submit" value="Add" className="btn btn-primary" /></span>
 			</form>
-			);
+		);
 	}
 }
 
