@@ -122,7 +122,7 @@ class ProductList extends React.Component {
 	render() {
 		var listNodes = this.props.data.map(function (listItem) {
 			return (
-				<ProductAction
+				<ProductItem
 					key={listItem.id}
 					nodeId={listItem.id}
 					product={listItem.product}
@@ -170,7 +170,7 @@ class ProductList extends React.Component {
 	}
 }
 
-class ProductAction extends React.Component {
+class ProductItem extends React.Component {
 	constructor(props) {
 		super(props);
 	}
