@@ -7,7 +7,8 @@ class ShoppingList extends React.Component {
 					"id":"01",
 					"product":"iPhone 7",
 					"highlight":false,
-					"editable":false
+					"editable":false,
+
 				},
 				{
 					"id":"02",
@@ -79,7 +80,6 @@ class ShoppingList extends React.Component {
 		this.setState({data})
 	}
 
-
 	handleEditable(nodeId) {
 		var data = this.state.data;
 		var result = data.filter(function(v) {
@@ -139,23 +139,27 @@ class ProductList extends React.Component {
 			return count + (item["highlight"] === true ? 1 : 0);
 		}, 0);
 
+		var highlightNodes = this.props.data.map(function (listItem) {
+			if(listItem.highlight) {
+				return (
+					listItem.product
+					)
+			}
+			return;
+		});
 
 		return (
 			<ul className="list-group">
 				<li className="row captions">
-
+				<ProductForm addItem={this.props.addItem.bind(this)} />
 				</li>
-
-
-
+				{listNodes}
 				<li className="row totals">
-					<span className="action total">TOTALgg: {this.props.data.length}</span>
-					<span className="order highlight">HIGHLIGHTgg: {numHighlight}</span>
+					<span className="action total">TOTAL: {this.props.data.length}</span>
+					<span className="order highlight">HIGHLIGHTED: {numHighlight}</span>
 				</li>
-
-        <li className="row totals">
-					<span className="action total">&nbsp;</span>
-					<span className="order highlight">HIGHLIGHT: {numHighlight}</span>
+				<li className="highlightDetails">
+					<span className="order">HIGHLIGHTED ITEM: {highlightNodes.filter(function(n){ return n != undefined }).join(', ')}</span>
 				</li>
 			</ul>
 		);
