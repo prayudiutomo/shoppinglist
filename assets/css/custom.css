@@ -8,6 +8,10 @@ body{
 	font-family: Helvetica, Arial, sans-serif;
 }
 
+h2 {
+	text-transform: capitalize;
+}
+
 ul{
 	list-style-type: none;
 }
@@ -123,7 +127,7 @@ a:hover {
 }
 
 .form-control {
-	width: 60%;
+	width: 67%;
 	display: inline-block;
 	font-size: 14px;
 	padding-left: 15px;
