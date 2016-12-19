@@ -7,23 +7,20 @@ class ShoppingList extends React.Component {
 					"id":"01",
 					"product":"iPhone 7",
 					"highlight":false,
-					"editable":false,
-					"inEditMode":false
+					"editable":false
 
 				},
 				{
 					"id":"02",
 					"product":"Macbookddd Pro",
 					"highlight":false,
-					"editable":false,
-					"inEditMode":false
+					"editable":false
 				},
 				{
 					"id":"03",
 					"product":"iPad",
 					"highlight":false,
-					"editable":false,
-					"inEditMode":false
+					"editable":false
 				}
 			]
 		};
@@ -41,7 +38,6 @@ class ShoppingList extends React.Component {
 
 		result[0].product = product;
 		result[0].editable = false;
-		result[0].inEditMode = false;
 
 		this.setState({data})
 	}
@@ -63,8 +59,7 @@ class ShoppingList extends React.Component {
 			id: this.generateId().toString(),
 			product: product,
 			highlight: false,
-			editable: false,
-			inEditMode: false
+			editable: false
 		});
 
 		this.setState({newItem})
@@ -93,10 +88,8 @@ class ShoppingList extends React.Component {
 
 		if (result[0].editable == false) {
 	   		result[0].editable = true;
-				result[0].inEditMode = true;
 		} else {
 	   		result[0].editable = false;
-				result[0].inEditMode = false;
 		}
 
 		this.setState({data})
@@ -109,7 +102,6 @@ class ShoppingList extends React.Component {
 					<ProductList
 						data={this.state.data}
 						editable={this.state.editable}
-						inEditMode={this.state.inEditMode}
 						handleEditable={this.handleEditable.bind(this)}
 						removeItem={this.handleItemRemoval.bind(this)}
 						updateItem={this.handleItemUpdated.bind(this)}
@@ -136,7 +128,6 @@ class ProductList extends React.Component {
 					product={listItem.product}
 					highlight={listItem.highlight}
 					editable={listItem.editable}
-					inEditMode={listItem.inEditMode}
 					handleEditable={this.props.handleEditable.bind(this)}
 					removeItem={this.props.removeItem.bind(this)}
 					updateItem={this.props.updateItem.bind(this)}
@@ -217,7 +208,7 @@ class ProductItem extends React.Component {
 			<li
 				className={className} >
 					<span className="itemName">
-						{this.props.inEditMode ?
+						{this.props.editable ?
 							<input type="text" defaultValue={this.props.product} ref="edit"/>
 		        :
 							<label onClick={this.updateHightlight.bind(this)}>
