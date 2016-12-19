@@ -186,9 +186,7 @@ class ProductItem extends React.Component {
 	}
 
 	updateItem(e) {
-		if (e.which === 13 || e.which === 27) {
-      this.props.updateItem(this.props.nodeId, this.refs.edit.textContent);
-    }
+		this.props.updateItem(this.props.nodeId, this.refs.edit.value);
 	}
 
 	removeItem(e) {
@@ -220,20 +218,14 @@ class ProductItem extends React.Component {
 				className={className} >
 					<span className="itemName">
 						{this.props.inEditMode ?
-							<input type="text" ref="edit"
-								onKeyUp={this.updateHightlight.bind(this)}
-								onChange={(data) => this.setState({data})}/>
+							<input type="text" defaultValue={this.props.product} ref="edit"/>
 		        :
-							<label
-								ref="edit"
-								onClick={this.updateHightlight.bind(this)}
-								contentEditable={this.props.editable}
-								onKeyUp={this.updateItem.bind(this)}>
+							<label onClick={this.updateHightlight.bind(this)}>
 								{this.props.product}
 							</label>
 		        }
 					</span>
-					<span className="action" onClick={this.handleEditable.bind(this)}>
+					<span className="action" onClick={(this.props.editable) ? this.updateItem.bind(this) : this.handleEditable.bind(this)}>
             {(this.props.editable) ? "Save" : "Edit"}
           </span>
 					<span className="action" onClick={this.removeItem.bind(this)}>Delete</span>
