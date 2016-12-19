@@ -8,19 +8,22 @@ class ShoppingList extends React.Component {
 					"product":"iPhone 7",
 					"highlight":false,
 					"editable":false,
+					"inEditMode":false
 
 				},
 				{
 					"id":"02",
 					"product":"Macbookddd Pro",
 					"highlight":false,
-					"editable":false
+					"editable":false,
+					"inEditMode":false
 				},
 				{
 					"id":"03",
 					"product":"iPad",
 					"highlight":false,
-					"editable":false
+					"editable":false,
+					"inEditMode":false
 				}
 			]
 		};
@@ -38,6 +41,7 @@ class ShoppingList extends React.Component {
 
 		result[0].product = product;
 		result[0].editable = false;
+		result[0].inEditMode = false;
 
 		this.setState({data})
 	}
@@ -59,7 +63,8 @@ class ShoppingList extends React.Component {
 			id: this.generateId().toString(),
 			product: product,
 			highlight: false,
-			editable: false
+			editable: false,
+			inEditMode: false
 		});
 
 		this.setState({newItem})
@@ -88,8 +93,10 @@ class ShoppingList extends React.Component {
 
 		if (result[0].editable == false) {
 	   		result[0].editable = true;
+				result[0].inEditMode = true;
 		} else {
 	   		result[0].editable = false;
+				result[0].inEditMode = false;
 		}
 
 		this.setState({data})
@@ -102,6 +109,7 @@ class ShoppingList extends React.Component {
 					<ProductList
 						data={this.state.data}
 						editable={this.state.editable}
+						inEditMode={this.state.inEditMode}
 						handleEditable={this.handleEditable.bind(this)}
 						removeItem={this.handleItemRemoval.bind(this)}
 						updateItem={this.handleItemUpdated.bind(this)}
@@ -128,6 +136,7 @@ class ProductList extends React.Component {
 					product={listItem.product}
 					highlight={listItem.highlight}
 					editable={listItem.editable}
+					inEditMode={listItem.inEditMode}
 					handleEditable={this.props.handleEditable.bind(this)}
 					removeItem={this.props.removeItem.bind(this)}
 					updateItem={this.props.updateItem.bind(this)}
@@ -173,6 +182,7 @@ class ProductList extends React.Component {
 class ProductItem extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = { text: '' };
 	}
 
 	updateItem(e) {
@@ -209,13 +219,19 @@ class ProductItem extends React.Component {
 			<li
 				className={className} >
 					<span className="itemName">
-						<label
-							ref="edit"
-							onClick={this.updateHightlight.bind(this)}
-							contentEditable={this.props.editable}
-							onKeyUp={this.updateItem.bind(this)}>
-							{this.props.product}
-						</label>
+						{this.props.inEditMode ?
+							<input type="text" ref="edit"
+								onKeyUp={this.updateHightlight.bind(this)}
+								onChange={(data) => this.setState({data})}/>
+		        :
+							<label
+								ref="edit"
+								onClick={this.updateHightlight.bind(this)}
+								contentEditable={this.props.editable}
+								onKeyUp={this.updateItem.bind(this)}>
+								{this.props.product}
+							</label>
+		        }
 					</span>
 					<span className="action" onClick={this.handleEditable.bind(this)}>
             {(this.props.editable) ? "Save" : "Edit"}
