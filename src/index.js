@@ -164,7 +164,7 @@ class ProductList extends React.Component {
 	render() {
 		var listNodes = this.props.data.map(function (listItem) {
 			return (
-				<ProductItem
+				<VisibleProductItem
 					key={listItem.id}
 					nodeId={listItem.id}
 					product={listItem.product}
@@ -249,6 +249,7 @@ class ProductItem extends React.Component {
 		return (
 			<li
 				className={className} >
+				  <span>{this.props.number} </span>
 					<span className="itemName">
 						{this.props.editable ?
 							<input type="text" defaultValue={this.props.product} ref="edit"/>
@@ -266,6 +267,12 @@ class ProductItem extends React.Component {
 			);
 	}
 }
+
+const VisibleProductItem = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProductItem)
+
 
 class ProductForm extends React.Component {
 	constructor(props) {
