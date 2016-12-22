@@ -1,3 +1,10 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+// import { Provider } from 'react-redux'
+// import { connect } from 'react-redux'
+//
+// let store = createStore(todoApp)
+
 class ShoppingList extends React.Component {
 	constructor(props) {
 		super(props);
@@ -113,6 +120,11 @@ class ShoppingList extends React.Component {
 		);
 	}
 }
+
+// const VisibleShoppingList = connect(
+//   // mapStateToProps,
+//   // mapDispatchToProps
+// )(ShoppingList)
 
 class ProductList extends React.Component {
 	constructor(props) {
@@ -250,5 +262,6 @@ class ProductForm extends React.Component {
 let root =  document.getElementById('root');
 
 ReactDOM.render(
-	<ShoppingList />, root
+	<ShoppingList />,
+	root
 	)
