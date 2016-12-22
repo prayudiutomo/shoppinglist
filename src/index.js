@@ -1,9 +1,27 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-// import { Provider } from 'react-redux'
-// import { connect } from 'react-redux'
-//
-// let store = createStore(todoApp)
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import { connect } from 'react-redux'
+
+// Actions
+export const increaseNumberBy1 = (number) => ({
+  type: 'INCREASE_NUMBER_BY_1',
+  number: number,
+});
+
+// Reducers
+const numberReducer = (state = {number: 0}, action) => {
+  switch (action.type) {
+    case 'INCREASE_NUMBER_BY_1':
+      return {number: action.number + 1};
+    default:
+      return state
+  }
+}
+
+// number
+let store = createStore(numberReducer);
 
 class ShoppingList extends React.Component {
 	constructor(props) {
@@ -105,6 +123,10 @@ class ShoppingList extends React.Component {
 	render() {
 		return (
 			<div className="container">
+				<div>{this.props.number}</div>
+				<button onClick={() => {
+						this.props.increaseNumberBy1(this.props.number);
+					}}>Increase</button>
 				<div className="col-sm-6">
 					<ProductList
 						data={this.state.data}
@@ -121,10 +143,18 @@ class ShoppingList extends React.Component {
 	}
 }
 
-// const VisibleShoppingList = connect(
-//   // mapStateToProps,
-//   // mapDispatchToProps
-// )(ShoppingList)
+const mapStateToProps = (state) => ({
+  number: state.number,
+})
+
+const mapDispatchToProps =  ({
+  increaseNumberBy1: increaseNumberBy1,
+})
+
+const VisibleShoppingList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ShoppingList)
 
 class ProductList extends React.Component {
 	constructor(props) {
@@ -262,6 +292,8 @@ class ProductForm extends React.Component {
 let root =  document.getElementById('root');
 
 ReactDOM.render(
-	<ShoppingList />,
+	<Provider store={store}>
+		<VisibleShoppingList />
+	</Provider>,
 	root
 	)
