@@ -63,17 +63,17 @@ const numberReducer = (state = initialState, action) => {
 			return { data: [...state.data, newProduct] }
 
 		case 'EDIT_PRODUCT':
-			return { data: state.data.map(item => item.id === action.id ? 
+			return { data: state.data.map(item => item.id === action.id ?
 				Object.assign({}, item, {product: action.product, editable: !item.editable}) : item) }
 		case 'SAVE_PRODUCT':
 			return {...state, id: action.id};
 
 		case 'SET_HIGHLIGHT':
-			return { data: state.data.map(item => item.id === action.id ? 
+			return { data: state.data.map(item => item.id === action.id ?
 				Object.assign({}, item, {highlight: !item.highlight}) : item) }
 
 		case 'SET_EDITABLE':
-			return { data: state.data.map(item => item.id === action.id ? 
+			return { data: state.data.map(item => item.id === action.id ?
 				Object.assign({}, item, {editable: !item.editable}) : item) }
 
 		case 'DELETE_PRODUCT':
@@ -94,7 +94,7 @@ class ShoppingList extends React.Component {
 		return (
 			<div className="container">
 				<div className="col-sm-6">
-					<ProductList data={this.props.data}/>
+					<VisibleProductList />
 				</div>
 			</div>
 		);
@@ -171,6 +171,10 @@ class ProductList extends React.Component {
 	}
 }
 
+const VisibleProductList = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ProductList)
 
 class ProductItem extends React.Component {
 	constructor(props) {
@@ -178,7 +182,6 @@ class ProductItem extends React.Component {
 	}
 
 	render() {
-
 		if (this.props.highlight) {
 			var className = 'row edit highlight';
 		} else {
@@ -188,8 +191,8 @@ class ProductItem extends React.Component {
 		return (
 			<li className={className} >
 				<span>{this.props.number} </span>
-				<span className="itemName"> 
-					{ this.props.editable ? 
+				<span className="itemName">
+					{ this.props.editable ?
 						<input type="text" defaultValue={this.props.product} ref="edit"/>
 						:
 						<label onClick={() => { this.props.setHighlight(this.props.id); }}>
@@ -234,13 +237,10 @@ class ProductForm extends React.Component {
 	}
 }
 
-
-
 const VisibleProductForm = connect(
 	mapStateToProps,
 	mapDispatchToProps
 )(ProductForm)
-
 
 let root =  document.getElementById('root');
 
