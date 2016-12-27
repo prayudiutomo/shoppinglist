@@ -8,11 +8,6 @@ import styles from '../assets/css/custom.css'
 let nextTodoId = 0
 
 // Actions
-export const increaseNumberBy1 = (number) => ({
-	type: 'INCREASE_NUMBER_BY_1',
-	number: number,
-});
-
 export const addProduct = (title) => ({
 	type: 'ADD_PRODUCT',
 	id: nextTodoId++,
@@ -93,8 +88,14 @@ class ShoppingList extends React.Component {
 	render() {
 		return (
 			<div className="container">
+				<div>
+					<h2>Shopping List</h2>
+				</div>
+				<div>
+					<VisibleProductForm />
+				</div>
 				<div className="col-sm-6">
-					<VisibleProductList />
+					<VisibleProductList/>
 				</div>
 			</div>
 		);
@@ -106,7 +107,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps =  ({
-	increaseNumberBy1: increaseNumberBy1,
 	setEditable: setEditable,
 	setHighlight: setHighlight,
 	addProduct: addProduct,
@@ -114,18 +114,13 @@ const mapDispatchToProps =  ({
 	deleteProduct: deleteProduct
 })
 
-const VisibleShoppingList = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ShoppingList)
-
 class ProductList extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
 	render() {
-		var listNodes = this.props.data.map(function (listItem) {
+		var productList = this.props.data.map(function (listItem) {
 			return (
 				<VisibleProductItem
 					key={listItem.id}
@@ -151,22 +146,21 @@ class ProductList extends React.Component {
 		});
 
 		return (
-			<ul className="list-group">
-				<li className="row captions">
-					<h2>Shopping List</h2>
-				</li>
-				<li className="row captions">
-					<VisibleProductForm />
-				</li>
-				{listNodes}
-				<li className="row totals">
+			<div>
+				<ul className="list-group">
+					{productList}
+				</ul>
+				<div className="col-sm-6">
 					<span className="action total">Total: {this.props.data.length}</span>
-					<span className="order highlight">Highlighted: {numHighlight}</span>
-				</li>
-				<li className="highlightDetails">
+				</div>
+				<div className="col-sm-6">
+					<span className="action highlight">Highlighted: {numHighlight}</span>
+				</div>
+
+				<div className="highlightDetails">
 					<span className="order">Highlighted Item: {highlightNodes.filter(function(n){ return n !== undefined }).join(', ')}</span>
-				</li>
-			</ul>
+				</div>
+			</div>
 		);
 	}
 }
@@ -176,24 +170,29 @@ const VisibleProductList = connect(
 	mapDispatchToProps
 )(ProductList)
 
+
 class ProductItem extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
-	render() {
-		if (this.props.highlight) {
-			var className = 'row edit highlight';
-		} else {
-			var className = 'row edit';
+	handleKeyDown(e) {
+		if (e.keyCode === 13) {
+			this.props.editProduct(this.props.id, this.refs.edit.value)
 		}
 
+		if (e.keyCode === 27) {
+			this.props.setEditable(this.props.id)
+		}
+	}
+
+	render() {
 		return (
-			<li className={className} >
+			<li className={(this.props.highlight)? 'row edit highlight':'row edit'} >
 				<span>{this.props.number} </span>
 				<span className="itemName">
 					{ this.props.editable ?
-						<input type="text" defaultValue={this.props.product} ref="edit"/>
+						<input type="text" ref="edit" defaultValue={this.props.product} onKeyDown={this.handleKeyDown.bind(this)} />
 						:
 						<label onClick={() => { this.props.setHighlight(this.props.id); }}>
 							{this.props.product}
@@ -230,10 +229,10 @@ class ProductForm extends React.Component {
 	render() {
 		return (
 			<form onSubmit={this.doSubmit.bind(this)}>
-			<span><input type="text" id="product" ref="product" className="form-control" placeholder="Add product" /></span>
-			<span><input type="submit" value="Add" className="btn" /></span>
+				<span><input type="text" id="product" ref="product" className="form-control" placeholder="Add product" /></span>
+				<span><input type="submit" value="Add" className="btn" /></span>
 			</form>
-			);
+		);
 	}
 }
 
@@ -242,11 +241,12 @@ const VisibleProductForm = connect(
 	mapDispatchToProps
 )(ProductForm)
 
+
 let root =  document.getElementById('root');
 
 ReactDOM.render(
 	<Provider store={store}>
-	<VisibleShoppingList />
+		<ShoppingList />
 	</Provider>,
 	root
-	)
+)
