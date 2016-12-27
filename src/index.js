@@ -88,10 +88,10 @@ class ShoppingList extends React.Component {
 	render() {
 		return (
 			<div className="container">
-				<div>
+				<div className="col-sm-6">
 					<h2>Shopping List</h2>
 				</div>
-				<div>
+				<div className="col-sm-6">
 					<VisibleProductForm />
 				</div>
 				<div className="col-sm-6">
@@ -235,6 +235,7 @@ class ProductForm extends React.Component {
 		);
 	}
 }
+
 
 const VisibleProductForm = connect(
 	mapStateToProps,
