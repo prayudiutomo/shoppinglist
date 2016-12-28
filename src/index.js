@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { connect } from 'react-redux'
-//import styles from '../assets/css/custom.css'
+import Styles from '../assets/css/Styles';
 
 let nextTodoId = 0
 
@@ -87,17 +87,17 @@ class ShoppingList extends React.Component {
 
 	render() {
 		return (
-			<div className="container">
-				<div className="col-sm-6">
-					<h2>Shopping List</h2>
-				</div>
-				<div className="col-sm-6">
+			<View className="container">
+				<View className="col-sm-6">
+					<Text>Shopping List</Text>
+				</View>
+				<View className="col-sm-6">
 					<VisibleProductForm />
-				</div>
-				<div className="col-sm-6">
+				</View>
+				<View className="col-sm-6">
 					<VisibleProductList/>
-				</div>
-			</div>
+				</View>
+			</View>
 		);
 	}
 }
@@ -146,21 +146,21 @@ class ProductList extends React.Component {
 		});
 
 		return (
-			<div>
-				<ul className="list-group">
+			<View>
+				<ul className="listGroup">
 					{productList}
 				</ul>
-				<div className="col-sm-6">
-					<span className="action total">Total: {this.props.data.length}</span>
-				</div>
-				<div className="col-sm-6">
-					<span className="action highlight">Highlighted: {numHighlight}</span>
-				</div>
+				<View className="col-sm-6">
+					<Text className="action total">Total: {this.props.data.length}</Text>
+				</View>
+				<View className="col-sm-6">
+					<Text className="action highlight">Highlighted: {numHighlight}</Text>
+				</View>
 
-				<div className="highlightDetails">
-					<span className="order">Highlighted Item: {highlightNodes.filter(function(n){ return n !== undefined }).join(', ')}</span>
-				</div>
-			</div>
+				<View className="highlightDetails">
+					<Text className="order">Highlighted Item: {highlightNodes.filter(function(n){ return n !== undefined }).join(', ')}</Text>
+				</View>
+			</View>
 		);
 	}
 }
@@ -188,8 +188,8 @@ class ProductItem extends React.Component {
 	render() {
 		return (
 			<li className={(this.props.highlight)? 'row edit highlight':'row edit'} >
-				<span>{this.props.number} </span>
-				<span className="itemName">
+				<Text>{this.props.number} </Text>
+				<Text className="itemName">
 					{ this.props.editable ?
 						<input type="text" ref="edit" defaultValue={this.props.product} onKeyDown={this.handleKeyDown.bind(this)} />
 						:
@@ -197,11 +197,11 @@ class ProductItem extends React.Component {
 							{this.props.product}
 						</label>
 					}
-				</span>
-				<span className="action" onClick={() => { (this.props.editable)? this.props.editProduct(this.props.id, this.refs.edit.value):this.props.setEditable(this.props.id); }}>
+				</Text>
+				<Text className="action" onClick={() => { (this.props.editable)? this.props.editProduct(this.props.id, this.refs.edit.value):this.props.setEditable(this.props.id); }}>
 					{(this.props.editable) ? "Save" : "Edit"}
-				</span>
-				<span className="action" onClick={() => { this.props.deleteProduct(this.props.id); }}>Delete</span>
+				</Text>
+				<Text className="action" onClick={() => { this.props.deleteProduct(this.props.id); }}>Delete</Text>
 			</li>
 		);
 	}
@@ -227,8 +227,8 @@ class ProductForm extends React.Component {
 	render() {
 		return (
 			<form onSubmit={this.doSubmit.bind(this)}>
-				<span><input type="text" id="product" ref="product" className="form-control" placeholder="Add product" /></span>
-				<span><input type="submit" value="Add" className="btn" /></span>
+				<Text><input type="text" id="product" ref="product" className="form-control" placeholder="Add product" /></Text>
+				<Text><input type="submit" value="Add" className="btn" /></Text>
 			</form>
 		);
 	}
@@ -239,30 +239,13 @@ const VisibleProductForm = connect(
 	mapDispatchToProps
 )(ProductForm)
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+export default ShoppingList;
 
-let root =  document.getElementById('root');
-
-ReactDOM.render(
-	<Provider store={store}>
-		<ShoppingList />
-	</Provider>,
-	root
-)
+// let root =  document.getElementById('root');
+//
+// ReactDOM.render(
+// 	<Provider store={store}>
+// 		<ShoppingList />
+// 	</Provider>,
+// 	root
+// )
