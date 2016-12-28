@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { connect } from 'react-redux'
-import styles from '../assets/css/custom.css'
+//import styles from '../assets/css/custom.css'
 
 let nextTodoId = 0
 
@@ -170,7 +170,6 @@ const VisibleProductList = connect(
 	mapDispatchToProps
 )(ProductList)
 
-
 class ProductItem extends React.Component {
 	constructor(props) {
 		super(props);
@@ -213,7 +212,6 @@ const VisibleProductItem = connect(
 	mapDispatchToProps
 )(ProductItem)
 
-
 class ProductForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -236,12 +234,29 @@ class ProductForm extends React.Component {
 	}
 }
 
-
 const VisibleProductForm = connect(
 	mapStateToProps,
 	mapDispatchToProps
 )(ProductForm)
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+});
 
 let root =  document.getElementById('root');
 
