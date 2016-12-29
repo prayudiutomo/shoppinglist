@@ -1,11 +1,13 @@
 import React from 'react'
+import {
+  Text,
+  View
+} from 'react-native';
 import ReactDOM from 'react-dom'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { connect } from 'react-redux'
 import Styles from '../assets/css/Styles';
-
-let nextTodoId = 0
 
 // Actions
 export const addProduct = (title) => ({
@@ -44,42 +46,6 @@ const initialState = {
 	}]
 }
 
-// Reducers
-const numberReducer = (state = initialState, action) => {
-	switch (action.type) {
-		case 'ADD_PRODUCT':
-			const newProduct = {
-				id: action.id,
-				product: action.product,
-				highlight: false,
-				editable: false
-			};
-
-			return { data: [...state.data, newProduct] }
-
-		case 'EDIT_PRODUCT':
-			return { data: state.data.map(item => item.id === action.id ?
-				Object.assign({}, item, {product: action.product, editable: !item.editable}) : item) }
-		case 'SAVE_PRODUCT':
-			return {...state, id: action.id};
-
-		case 'SET_HIGHLIGHT':
-			return { data: state.data.map(item => item.id === action.id ?
-				Object.assign({}, item, {highlight: !item.highlight}) : item) }
-
-		case 'SET_EDITABLE':
-			return { data: state.data.map(item => item.id === action.id ?
-				Object.assign({}, item, {editable: !item.editable}) : item) }
-
-		case 'DELETE_PRODUCT':
-			return { data: state.data.filter((v) => v.id !== action.id)}
-		default:
-			return state
-	}
-}
-
-let store = createStore(numberReducer);
-
 class ShoppingList extends React.Component {
 	constructor(props) {
 		super(props);
@@ -90,9 +56,6 @@ class ShoppingList extends React.Component {
 			<View className="container">
 				<View className="col-sm-6">
 					<Text>Shopping List</Text>
-				</View>
-				<View className="col-sm-6">
-					<VisibleProductForm />
 				</View>
 				<View className="col-sm-6">
 					<VisibleProductList/>
@@ -239,7 +202,15 @@ const VisibleProductForm = connect(
 	mapDispatchToProps
 )(ProductForm)
 
-export default ShoppingList;
+const Root = () => (
+  <Provider store={store}>
+    <ShoppingList />
+  </Provider>
+)
+
+//AppRegistry.registerComponent('shoppinglistrn', () => Root);
+
+export default Root;
 
 // let root =  document.getElementById('root');
 //
