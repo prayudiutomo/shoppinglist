@@ -2,7 +2,8 @@ import React from 'react'
 import {
   Text,
   View,
-	ListView
+	ListView,
+	StyleSheet
 } from 'react-native';
 import ReactDOM from 'react-dom'
 import { createStore } from 'redux'
@@ -14,6 +15,7 @@ class ShoppingList extends React.Component {
 	// Initialize the hardcoded data
 	constructor(props) {
     super(props);
+
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows([
@@ -22,16 +24,31 @@ class ShoppingList extends React.Component {
     };
   }
 
+	renderList() {
+		return <ListView
+			dataSource={this.state.dataSource}
+			renderRow={(rowData) => (
+					<Text>{rowData} Delete Edit</Text>
+				)
+			}
+		/>
+	}
+
 	render() {
+		console.log(this.state)
     return (
-      <View style={{flex: 1, paddingTop: 22}}>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Text>{rowData} Delete Edit</Text>}
-        />
+      <View style={styles.container}>
+        {this.renderList()}
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		paddingTop: 22,
+	}
+});
 
 export default ShoppingList;
