@@ -3,7 +3,8 @@ import {
   Text,
   View,
 	ListView,
-	StyleSheet
+	StyleSheet,
+	TextInput
 } from 'react-native';
 import ReactDOM from 'react-dom'
 import { createStore } from 'redux'
@@ -13,6 +14,18 @@ import Styles from '../assets/css/Styles';
 
 const Header = () => {
 	return <Text>Shopping List</Text>
+}
+
+const Form = () => {
+	return (
+		<View>
+			<TextInput
+        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        onChangeText={(text) => this.setState({text})}
+      />
+		<Text>Add</Text>
+		</View>
+	)
 }
 
 const Footer = () => {
@@ -53,6 +66,7 @@ class ShoppingList extends React.Component {
     return (
       <View style={styles.container}>
 				<Header/>
+				<Form/>
         {this.renderList()}
 				<Footer/>
       </View>
