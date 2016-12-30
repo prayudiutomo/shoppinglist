@@ -11,6 +11,20 @@ import { Provider } from 'react-redux'
 import { connect } from 'react-redux'
 import Styles from '../assets/css/Styles';
 
+const Header = () => {
+	return <Text>Shopping List</Text>
+}
+
+const Footer = () => {
+	return (
+		<View>
+			<Text>Highlighted: 1</Text>
+			<Text>Total: 1</Text>
+			<Text>Highlighted Item: Macbook Pro</Text>
+		</View>
+	)
+}
+
 class ShoppingList extends React.Component {
 	// Initialize the hardcoded data
 	constructor(props) {
@@ -38,7 +52,9 @@ class ShoppingList extends React.Component {
 		console.log(this.state)
     return (
       <View style={styles.container}>
+				<Header/>
         {this.renderList()}
+				<Footer/>
       </View>
     );
   }
@@ -46,7 +62,6 @@ class ShoppingList extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		paddingTop: 22,
 	}
 });
