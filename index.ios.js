@@ -6,9 +6,7 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  Text,
-  View
+  AppRegistry
 } from 'react-native';
 
 import ShoppingList from './src';
