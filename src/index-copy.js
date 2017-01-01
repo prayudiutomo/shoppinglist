@@ -198,7 +198,11 @@ class ProductItem extends React.Component {
 						</label>
 					}
 				</span>
-				<span className="action" onClick={() => { (this.props.editable)? this.props.editProduct(this.props.id, this.refs.edit.value):this.props.setEditable(this.props.id); }}>
+				<span className="action"
+					onClick={() => {
+						(this.props.editable) ? this.props.editProduct(this.props.id, this.refs.edit.value) :
+						this.props.setEditable(this.props.id);
+					}}>
 					{(this.props.editable) ? "Save" : "Edit"}
 				</span>
 				<span className="action" onClick={() => { this.props.deleteProduct(this.props.id); }}>Delete</span>

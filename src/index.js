@@ -43,12 +43,20 @@ export const deleteProduct = (id) => ({
 });
 
 const initialState = {
-	data:[{
-		id: Math.floor(Math.random()*90000) + 10000,
-		product: 'Apple Macbook',
-		highlight: false,
-		editable: false
-	}]
+	data:[
+    {
+		  id: Math.floor(Math.random()*90000) + 10000,
+  		product: 'Apple Macbook',
+  		highlight: false,
+  		editable: false
+	  },
+    {
+      id: Math.floor(Math.random()*90000) + 10000,
+  		product: 'Apple iPad',
+  		highlight: false,
+  		editable: false
+    }
+  ]
 }
 
 // Reducers
@@ -106,12 +114,16 @@ const Header = () => {
 class ProductForm extends React.Component {
 	constructor(props) {
 		super(props);
+    this.state = {
+      text: ''
+    }
 	}
 
 	doSubmit(e) {
 		e.preventDefault();
-		this.props.addProduct(this.refs.product.value);
-		this.refs.product.value = '';
+    console.log(this.state.text);
+		this.props.addProduct(this.state.text);
+		//this.state.text.value = '';
 		return;
 	}
 
@@ -121,6 +133,8 @@ class ProductForm extends React.Component {
 				<TextInput
 					id="product" ref="product"
 	        style={styles.form}
+          onChangeText={(text) => this.setState({text})}
+          value={this.state.text}
 	      />
 				<Button onPress={this.doSubmit.bind(this)}/>
 			</View>
@@ -141,38 +155,87 @@ const Button = ({ onPress, text }) => {
 	);
 }
 
-const Footer = () => {
+const Footer = (props) => {
+  console.log(props.data);
+
+  var numHighlight = props.data.reduce(function(count, item) {
+    return count + (item["highlight"] === true ? 1 : 0);
+  }, 0);
+
+  var highlightNodes = props.data.map(function (listItem) {
+    if(listItem.highlight) {
+      return (
+        listItem.product
+        )
+    }
+    return;
+  });
+
 	return (
 		<View>
-			<Text>Highlighted: 1</Text>
-			<Text>Total: 1</Text>
-			<Text>Highlighted Item: Macbook Pro</Text>
+			<Text>Highlighted: {numHighlight}</Text>
+			<Text>Total: {props.data.length}</Text>
+			<Text>Highlighted Item: {highlightNodes.filter(function(n){ return n !== undefined }).join(', ')}</Text>
 		</View>
 	);
 }
+const VisibleFooter = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Footer)
 
 class ProductList extends React.Component {
 	constructor(props) {
     super(props);
 
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows([
-        'Macbook Pro', 'iPad', 'iPhone', 'Samsung Galaxy', 'Lenovo Note', 'Xiaomi', 'Sony XPeria', 'Blackberry'
-      ])
-    };
+      product: false
+    }
+  }
+
+  componentWillMount() {
+    this.dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+  }
+
+  renderRow(rowData) {
+    return (
+			<View className={styles.textList}>
+
+      { rowData.editable ?
+        <TextInput
+          style={styles.edit}
+          defaultValue={rowData.product}
+          onChangeText={(product) => this.setState({product})}
+        />
+        :
+        <Text onPress={() => { this.props.setHighlight(rowData.id); }}>
+          {rowData.product}
+        </Text>
+      }
+        <Text onPress={() => {this.props.deleteProduct(rowData.id)}}
+        >Delete</Text>
+      <Text onPress={() => {
+        (rowData.editable) ? (this.state.product)? this.props.editProduct(rowData.id, this.state.product):this.props.editProduct(rowData.id, rowData.product) :
+        this.props.setEditable(rowData.id);
+        }}>
+          {(rowData.editable) ? "Save" : "Edit"}
+        </Text>
+      </View>
+    );
   }
 
 	render() {
+    var dataSource = this.dataSource.cloneWithRows(this.props.data)
 		return <ListView
-			dataSource={this.state.dataSource}
-			renderRow={(rowData) => (
-					<Text className={styles.textList}>{rowData} Delete Edit</Text>
-				)
-			}
+			dataSource={dataSource}
+      renderRow={(rowData) => this.renderRow(rowData)}
 		/>
 	}
 }
+const VisibleProductList = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ProductList)
 
 class ShoppingList extends React.Component {
 	constructor(props) {
@@ -185,9 +248,9 @@ class ShoppingList extends React.Component {
 			<Provider store={store}>
 	      <View style={styles.container}>
 					<Header/>
-					<ProductForm/>
-					<ProductList/>
-					<Footer/>
+					<VisibleProductForm/>
+					<VisibleProductList/>
+					<VisibleFooter/>
 	      </View>
 			</Provider>
     );
@@ -210,7 +273,12 @@ const styles = StyleSheet.create({
 		backgroundColor: '#efefef',
 		borderWidth: 1,
 		borderColor: '#eaeaea'
-	}
+	},
+  edit: {
+    height: 40,
+    borderColor: '#000',
+    borderWidth: 1
+  }
 });
 
 export default ShoppingList;
