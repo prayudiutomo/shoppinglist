@@ -108,7 +108,11 @@ const mapDispatchToProps =  ({
 })
 
 const Header = () => {
-	return <Text>Shopping List</Text>
+	return (
+    <View style={styles.header}>
+      <Text style={styles.headerText}>Shopping List</Text>
+    </View>
+  )
 }
 
 class ProductForm extends React.Component {
@@ -123,20 +127,24 @@ class ProductForm extends React.Component {
 		e.preventDefault();
     console.log(this.state.text);
 		this.props.addProduct(this.state.text);
-		//this.state.text.value = '';
+		this.state.text = '';
 		return;
 	}
 
 	render() {
 		return (
-			<View>
-				<TextInput
+			<View style={styles.formView}>
+        <View>
+          <TextInput
 					id="product" ref="product"
-	        style={styles.form}
+	        style={styles.formInput}
           onChangeText={(text) => this.setState({text})}
           value={this.state.text}
 	      />
-				<Button onPress={this.doSubmit.bind(this)}/>
+        </View>
+        <View>
+				  <Button onPress={this.doSubmit.bind(this)}/>
+        </View>
 			</View>
 		);
 	}
@@ -149,8 +157,8 @@ const VisibleProductForm = connect(
 
 const Button = ({ onPress, text }) => {
 	return (
-		<TouchableOpacity onPress={onPress}>
-			<Text style={styles.button}>Add</Text>
+		<TouchableOpacity style={styles.button} onPress={onPress}>
+      <Text>Add</Text>
 		</TouchableOpacity>
 	);
 }
@@ -172,10 +180,18 @@ const Footer = (props) => {
   });
 
 	return (
-		<View>
-			<Text>Highlighted: {numHighlight}</Text>
-			<Text>Total: {props.data.length}</Text>
-			<Text>Highlighted Item: {highlightNodes.filter(function(n){ return n !== undefined }).join(', ')}</Text>
+		<View style={styles.footer}>
+			<View style={styles.footerTop}>
+        <View>
+          <Text>Highlighted: {numHighlight}</Text>
+        </View>
+        <View>
+          <Text>Total: {props.data.length}</Text>
+        </View>
+      </View>
+			<View>
+        <Text>Highlighted Item: {highlightNodes.filter(function(n){ return n !== undefined }).join(', ')}</Text>
+      </View>
 		</View>
 	);
 }
@@ -199,27 +215,40 @@ class ProductList extends React.Component {
 
   renderRow(rowData) {
     return (
-			<View className={styles.textList}>
+			<View style={styles.textList}>
 
       { rowData.editable ?
         <TextInput
-          style={styles.edit}
+          style={styles.editList}
           defaultValue={rowData.product}
           onChangeText={(product) => this.setState({product})}
         />
         :
-        <Text onPress={() => { this.props.setHighlight(rowData.id); }}>
-          {rowData.product}
-        </Text>
+        <View>
+          <Text style={
+            (rowData.editable) ?
+              styles.highlighted
+              :
+              styles.highlighteds
+            }
+            onPress={() => { this.props.setHighlight(rowData.id); }}>{rowData.product}</Text>
+        </View>
       }
-        <Text onPress={() => {this.props.deleteProduct(rowData.id)}}
-        >Delete</Text>
-      <Text onPress={() => {
-        (rowData.editable) ? (this.state.product)? this.props.editProduct(rowData.id, this.state.product):this.props.editProduct(rowData.id, rowData.product) :
-        this.props.setEditable(rowData.id);
-        }}>
-          {(rowData.editable) ? "Save" : "Edit"}
-        </Text>
+
+      <View style={styles.actionList}>
+        <View>
+          <Text onPress={() => {this.props.deleteProduct(rowData.id)}}
+            >Delete</Text>
+        </View>
+        <View>
+            <Text onPress={() => {
+              (rowData.editable) ? (this.state.product)? this.props.editProduct(rowData.id, this.state.product) : this.props.editProduct(rowData.id, rowData.product) :
+              this.props.setEditable(rowData.id);
+              }}>
+              {(rowData.editable) ? "Save" : "Edit"}
+            </Text>
+          </View>
+        </View>
       </View>
     );
   }
@@ -227,6 +256,7 @@ class ProductList extends React.Component {
 	render() {
     var dataSource = this.dataSource.cloneWithRows(this.props.data)
 		return <ListView
+      style={styles.listView}
 			dataSource={dataSource}
       renderRow={(rowData) => this.renderRow(rowData)}
 		/>
@@ -259,26 +289,89 @@ class ShoppingList extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: 22
+		paddingTop: 40,
+    flex: 1,
+    justifyContent: 'space-around',
+    flexDirection: 'column',
 	},
-	textList: {
-		fontSize: 16
-	},
-	form: {
+  header: {
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  headerText: {
+    fontSize: 24,
+    color: 'black'
+  },
+  formView: {
+    alignItems: 'center',
+    marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  formInput: {
 		height: 40,
+    width: 300,
 		borderColor: 'gray',
 		borderWidth: 1
 	},
 	button: {
 		backgroundColor: '#efefef',
 		borderWidth: 1,
-		borderColor: '#eaeaea'
+		borderColor: '#aaa',
+    padding: 10
 	},
-  edit: {
-    height: 40,
-    borderColor: '#000',
+  listView: {
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    paddingTop: 5,
+    paddingBottom: 10,
+  },
+  textList: {
+    borderColor: '#aaa',
+    borderWidth: 1,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    borderTopWidth: 0,
+    paddingTop: 10,
+    paddingBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  actionList: {
+    width: 100,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end'
+  },
+  editList: {
+    height: 30,
+    width: 200,
+    borderColor: '#ff0000',
     borderWidth: 1
-  }
+  },
+  highlighted: {
+    backgroundColor: '#eaeaea'
+  },
+  footer: {
+    marginTop: 10,
+    marginBottom: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    flexDirection: 'column',
+    justifyContent: 'space-around'
+  },
+  footerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
 });
 
 export default ShoppingList;
